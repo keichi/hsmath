@@ -86,7 +86,7 @@ simplifyn expr =
 testexpr2 = Op Mul (Symbol "x") (Func "log" (Symbol "x"))
 
 main = do
-    case parse expr "" "sin(x)/x" of
+    case parse expr "" "(x*x+2*x+3)/(sin(x)-4*y/x)" of
         Left error  ->  print error
         Right exp   ->  print exp
     print $ simplifyn $ diff testexpr2 "x"

@@ -25,8 +25,11 @@ data Expression = Number Integer
     deriving (Eq)
 
 instance Show Expression where
-    show (Symbol x)       = x
-    show (Number x)       = show x
-    show (Func name e)    = name ++ "(" ++ show e ++ ")"
-    show (Op op e1 e2)    = show e1 ++ show op ++ show e2
-
+    show e = showWithParen 0 e where 
+        showWithParen _ (Symbol x)       = x
+        showWithParen _ (Number x)       = show x
+        showWithParen _ (Func name e)    = name ++ "(" ++ show e ++ ")"
+        showWithParen  w (Op op e1 e2)   = head ++ showWithParen curOpWeight e1 ++ show op ++ showWithParen curOpWeight e2 ++ foot where
+            head = if w > curOpWeight then "(" else ""
+            foot = if w > curOpWeight then ")" else ""
+            curOpWeight = getOpWeight op
