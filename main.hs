@@ -1,39 +1,8 @@
-import Control.Applicative hiding ((<|>), many)
+module Main where
+
 import Text.Parsec
-import Text.Parsec.String
-
-data Operators = Add | Sub | Mul | Div | Pow deriving (Eq)
-
-instance Show Operators where
-    show Add = "+"
-    show Sub = "-"
-    show Mul = "*"
-    show Div = "/"
-    show Pow = "^"
-
-data Expression = Number Integer
-    | Symbol String
-    | Op Operators Expression Expression
-    | Func String Expression
-
-    deriving (Eq, Show)
-
-expr :: Parser Expression
-expr = foldr ($) <$> factor <*> many (add <|> sub)
-    where add = (Op Add) <$> (char '+' *> factor)
-          sub = (flip $ Op Sub) <$> (char '-' *> factor)
-
-factor :: Parser Expression
-factor = foldr ($) <$> term <*> many (mul <|> div)
-    where mul = (Op Mul) <$> (char '*' *> term)
-          div = (flip $ Op Div) <$> (char '/' *> term)
-
-term :: Parser Expression
-term = number <|> paren <|> try func <|> variable
-    where number = (Number . read) <$> many1 digit
-          paren = char '(' *> expr <* char ')'
-          variable = Symbol <$> many1 letter
-          func = Func <$> (many1 letter) <*> (char '(' *> expr <* char ')')
+import ExpressionTree
+import ExpressionParser
 
 getVarVal :: [(String, Double)] -> String -> Double
 getVarVal table name =
