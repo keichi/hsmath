@@ -1,5 +1,9 @@
+HsMath
+--------------------------------------------------------------------------------
 This is a simple Computer Algebra System implemented in Haskell.
 It will support calculus of elementary functions,
 factorization and expansion of expressions, etc.
 
 Requires GHC 7.x and Parsec 3.
+
+Keichi TAKAHSHI (keitix.keitix@gmail.com)
